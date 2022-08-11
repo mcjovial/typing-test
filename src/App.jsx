@@ -25,7 +25,7 @@ const App = () => {
 	useEffect(() => {
 		const newChallenge = random(challenges)
 		setChallenge(newChallenge)
-		setInput(newChallenge.text)
+		// setInput(newChallenge.text)
 	}, [])
 
 	const handleEnd = () => {
@@ -148,7 +148,7 @@ const App = () => {
 									Start the Typing speed challenge and find out how fast you can type for real!
 								</p>
 
-                <div className="alert alert-primary" role="alert">{ challenge.text }</div>
+                {started ? (<div className="alert alert-primary" role="alert">{challenge.text}</div>) : <textarea className="rounded lead" name="story" rows="5" cols="60"> Paste your challenge text here... </textarea>}
 							</div>
 
 							{ended ? (
