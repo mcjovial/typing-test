@@ -7,8 +7,8 @@ let interval = null
 
 const App = () => {
 	const inputRef = useRef(null)
-	const outputRef = useRef(null)
-	const [ duration, setDuration ] = useState(60)
+  const outputRef = useRef(null)
+	const [ duration, setDuration ] = useState(0)
 	const [ started, setStarted ] = useState(false)
 	const [ ended, setEnded ] = useState(false)
 	const [ index, setIndex ] = useState(0)
@@ -46,7 +46,11 @@ const App = () => {
 		}, 1000)
 	}
 
-	const handleStart = () => {
+  let minutes = 1
+  const handleStart = () => {
+    if (duration <= 0) {
+      return
+    }
 		setStarted(true)
 		setEnded(false)
 		setInput(challenge.text)
@@ -96,7 +100,14 @@ const App = () => {
 	useEffect(() => {
 		const stroedScore = localStorage.getItem('wpm')
 		if (stroedScore) setLastScore(stroedScore)
-	}, [])
+  }, [])
+  
+  const ch_tim = (e) => {
+    e.preventDefault()
+    // minutes = e.target.value
+    setDuration(60*e.target.value)
+    console.log(duration);
+  }
 
 	return (
 		<div className="App">
@@ -205,7 +216,7 @@ const App = () => {
 
               <div>
                 <label>Choose Duration in Minutes:
-                  <input list="time" name="challengetime" />
+                  <input list="time" name="challenge_time" onChange={ch_tim} />
                 </label>
                 <datalist id="time">
                   <option value="1"/>
