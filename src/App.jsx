@@ -15,7 +15,8 @@ const App = () => {
 	const [ correctIndex, setCorrectIndex ] = useState(0)
 	const [ errorIndex, setErrorIndex ] = useState(0)
 	const [ challenge, setChallenge ] = useState({})
-	const [ input, setInput ] = useState('')
+  const [ input, setInput ] = useState('')
+  const [ text, setText ] = useState('')
 	const [ cpm, setCpm ] = useState(0)
 	const [ wpm, setWpm ] = useState(0)
 	const [ accuracy, setAccuracy ] = useState(0)
@@ -24,9 +25,12 @@ const App = () => {
 
 	useEffect(() => {
 		const newChallenge = random(challenges)
-		setChallenge(newChallenge)
-		// setInput(newChallenge.text)
-	}, [])
+    setChallenge(newChallenge)
+    if (!text) {
+      setText(newChallenge.text)
+      setInput(newChallenge.text)
+    }
+	}, [text])
 
 	const handleEnd = () => {
 		setEnded(true)
@@ -46,14 +50,15 @@ const App = () => {
 		}, 1000)
 	}
 
-  let minutes = 1
   const handleStart = () => {
     if (duration <= 0) {
       return
     }
 		setStarted(true)
-		setEnded(false)
-		setInput(challenge.text)
+    setEnded(false)
+    if (!input) {
+      setText(challenge.text)
+    }
 		inputRef.current.focus()
 		setTimer()
 	}
@@ -61,7 +66,7 @@ const App = () => {
 	const handleKeyDown = e => {
 		e.preventDefault()
 		const { key } = e
-		const challengeText = challenge.text
+    const challengeText = text
 
 		if (key === challengeText.charAt(index)) {
 			setIndex(index + 1)
@@ -104,9 +109,13 @@ const App = () => {
   
   const ch_tim = (e) => {
     e.preventDefault()
-    // minutes = e.target.value
     setDuration(60*e.target.value)
-    console.log(duration);
+  }
+
+  const cha_txt = (e) => {
+    e.preventDefault()
+    setInput(e.target.value)
+    setText(e.target.value)
   }
 
 	return (
@@ -138,6 +147,44 @@ const App = () => {
 							<ItemList name="CPM" data={cpm} />
 							<ItemList name="Last Score" data={lastScore} />
 						</ul>
+          </div>
+          <div className="col-sm-6 col-md-2 order-md-2 px-5">
+						<div className="list-unstyled text-center small">
+							<ItemList name="Timers" data={duration} />
+							<ItemList name="Errors" data={errorIndex} />
+              <ItemList name="Acuracy" data={accuracy} symble="%" />
+
+              <div>
+                <label>Choose Duration in Minutes:
+                  <input className='col-md-4' list="time" name="challenge_time" onChange={ch_tim} />
+                </label>
+                <datalist id="time">
+                  <option value="1"/>
+                  <option value="2"/>
+                  <option value="5"/>
+                </datalist>
+              </div>
+              
+              <div className="control my-5">
+									{ended ? (
+										<button
+											className="btn btn-outline-danger btn-circle"
+											onClick={() => window.location.reload()}
+										>
+											Reload
+										</button>
+									) : started ? (
+										<button className="btn btn-circle btn-outline-success" disabled>
+											Hurry
+										</button>
+									) : (
+										<button className="btn btn-circle btn-outline-success" onClick={handleStart}>
+											GO!
+										</button>
+									)}
+									<span className="btn-circle-animation" />
+								</div>
+						</div>
 					</div>
 					{/* Body */}
 					<div className="col-sm-12 col-md-8 order-md-1">
@@ -148,12 +195,12 @@ const App = () => {
 									Start the Typing speed challenge and find out how fast you can type for real!
 								</p>
 
-                {started ? (<div className="alert alert-primary" role="alert">{challenge.text}</div>) : <textarea className="rounded lead" name="story" rows="5" cols="60"> Paste your challenge text here... </textarea>}
+                {started ? (<div className="alert alert-primary" role="alert">{text}</div>) : <textarea className="col-md-12 rounded lead" name="story" rows="5" cols="60" onChange={cha_txt} defaultValue="Paste your challenge text here..."></textarea>}
 							</div>
 
 							{ended ? (
 								<div className="bg-dark text-light p-4 mt-5 lead rounded">
-									<span>"{challenge.text}"</span>
+									<span>"{text}"</span>
 								</div>
 							) : started ? (
 								<div
@@ -205,45 +252,6 @@ const App = () => {
                   </div>
                 </div>
 							</div>
-						</div>
-					</div>
-
-					<div className="col-sm-6 col-md-2 order-md-2 px-5">
-						<div className="list-unstyled text-center small">
-							<ItemList name="Timers" data={duration} />
-							<ItemList name="Errors" data={errorIndex} />
-              <ItemList name="Acuracy" data={accuracy} symble="%" />
-
-              <div>
-                <label>Choose Duration in Minutes:
-                  <input list="time" name="challenge_time" onChange={ch_tim} />
-                </label>
-                <datalist id="time">
-                  <option value="1"/>
-                  <option value="2"/>
-                  <option value="5"/>
-                </datalist>
-              </div>
-              
-              <div className="control my-5">
-									{ended ? (
-										<button
-											className="btn btn-outline-danger btn-circle"
-											onClick={() => window.location.reload()}
-										>
-											Reload
-										</button>
-									) : started ? (
-										<button className="btn btn-circle btn-outline-success" disabled>
-											Hurry
-										</button>
-									) : (
-										<button className="btn btn-circle btn-outline-success" onClick={handleStart}>
-											GO!
-										</button>
-									)}
-									<span className="btn-circle-animation" />
-								</div>
 						</div>
 					</div>
 				</div>
