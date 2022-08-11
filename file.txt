@@ -89,10 +89,12 @@ const App = () => {
 		}
 	}
 
-	useEffect(() => {
-    if (ended) localStorage.setItem('wpm', wpm)
-  }, [ended, wpm])
-  
+	useEffect(
+		() => {
+			if (ended) localStorage.setItem('wpm', wpm)
+		},
+		[ ended, wpm ]
+	)
 	useEffect(() => {
 		const stroedScore = localStorage.getItem('wpm')
 		if (stroedScore) setLastScore(stroedScore)
@@ -130,14 +132,34 @@ const App = () => {
 					</div>
 					{/* Body */}
 					<div className="col-sm-12 col-md-8 order-md-1">
-						<div className="container border px-5 rounded">
+						<div className="container">
 							<div className="text-center mt-4 header">
 								<h1>How Fast Can You Type?</h1>
 								<p className="lead">
 									Start the Typing speed challenge and find out how fast you can type for real!
 								</p>
 
-                <div className="alert alert-primary" role="alert">{ challenge.text }</div>
+                <div className="alert alert-danger" role="alert">{ challenge.text }</div>
+
+								<div className="control my-5">
+									{ended ? (
+										<button
+											className="btn btn-outline-danger btn-circle"
+											onClick={() => window.location.reload()}
+										>
+											Reload
+										</button>
+									) : started ? (
+										<button className="btn btn-circle btn-outline-success" disabled>
+											Hurry
+										</button>
+									) : (
+										<button className="btn btn-circle btn-outline-success" onClick={handleStart}>
+											GO!
+										</button>
+									)}
+									<span className="btn-circle-animation" />
+								</div>
 							</div>
 
 							{ended ? (
@@ -163,87 +185,97 @@ const App = () => {
 
 							<div className="p-4 mt-4 bg-dark text-light rounded lead" ref={outputRef} />
 
-							<h6 className="mt-5">Hints!</h6>
+							<h6 className="mt-5">Tip!</h6>
 							<ul>
 								<li>
 									Word Per Minute (WPM) is measured by calculating how many words you can type in 1
 									minute.
 								</li>
 								<li>Character Per Minute (CPM) calculates how many characters are typed per minute.</li>
+								<li>
+									The top typing speed was achieved by{' '}
+									<a
+										href="https://en.wikipedia.org/wiki/Typing#Alphanumeric_entry"
+										rel="noopener noreferrer"
+										target="_blank"
+									>
+										Stella Pajunas
+									</a>{' '}
+									in 1946, whereas Mrs. Barbara Blackburn has averaged 150 wpm in 50 minutes and her
+									top speed was 212 wpm.
+								</li>
 							</ul>
 							<hr className="my-4" />
 							<div className="mb-5">
-                <h6 className="py-2">Average Typing Speeds</h6>
-                <div className="">
-                  <div className="d-flex text-white meter-gauge rounded">
-                    <span className="col" style={{ background: '#eb4841' }}>
-                      0 - 20 Slow
-                    </span>
-                    <span className="col" style={{ background: '#f48847' }}>
-                      20 - 40 Average
-                    </span>
-                    <span className="col" style={{ background: '#ffc84a' }}>
-                      40 - 60 Fast
-                    </span>
-                    <span className="col" style={{ background: '#a6c34c' }}>
-                      60 - 80 Professional
-                    </span>
-                    <span className="col" style={{ background: '#4ec04e' }}>
-                      80 - 100+ Master
-                    </span>
-                  </div>
-                </div>
+								<h6 className="py-2">Average Typing Speeds</h6>
+								<div className="d-flex text-white meter-gauge">
+									<span className="col" style={{ background: '#eb4841' }}>
+										0 - 20 Slow
+									</span>
+									<span className="col" style={{ background: '#f48847' }}>
+										20 - 40 Average
+									</span>
+									<span className="col" style={{ background: '#ffc84a' }}>
+										40 - 60 Fast
+									</span>
+									<span className="col" style={{ background: '#a6c34c' }}>
+										60 - 80 Professional
+									</span>
+									<span className="col" style={{ background: '#4ec04e' }}>
+										80 - 100+ Top
+									</span>
+								</div>
 							</div>
 						</div>
 					</div>
 
 					<div className="col-sm-6 col-md-2 order-md-2 px-5">
-						<div className="list-unstyled text-center small">
+						<ul className="list-unstyled text-center small">
 							<ItemList name="Timers" data={duration} />
 							<ItemList name="Errors" data={errorIndex} />
-              <ItemList name="Acuracy" data={accuracy} symble="%" />
-
-              <div>
-                <label>Choose Duration in Minutes:
-                  <input list="time" name="challengetime" />
-                </label>
-                <datalist id="time">
-                  <option value="1"/>
-                  <option value="2"/>
-                  <option value="5"/>
-                </datalist>
-              </div>
-              
-              <div className="control my-5">
-									{ended ? (
-										<button
-											className="btn btn-outline-danger btn-circle"
-											onClick={() => window.location.reload()}
-										>
-											Reload
-										</button>
-									) : started ? (
-										<button className="btn btn-circle btn-outline-success" disabled>
-											Hurry
-										</button>
-									) : (
-										<button className="btn btn-circle btn-outline-success" onClick={handleStart}>
-											GO!
-										</button>
-									)}
-									<span className="btn-circle-animation" />
-								</div>
-						</div>
+							<ItemList name="Acuracy" data={accuracy} symble="%" />
+						</ul>
 					</div>
 				</div>
 
 				<footer className="small text-muted pt-5 pb-2 footer">
 					<div className="footer-info text-center">
+						<ul className="list-inline m-1">
+							<li className="list-inline-item">v1.0.0</li>
+							<li className="list-inline-item"> - </li>
+							<li className="list-inline-item">
+								<a
+									href="https://github.com/awran5/react-typing-speed-test-game"
+									target="_blank"
+									title="GitHub"
+									rel="noopener noreferrer"
+								>
+									GitHub
+								</a>
+							</li>
+							<li className="list-inline-item"> - </li>
+							<li className="list-inline-item">
+								<a
+									href="https://github.com/awran5/react-typing-speed-test-game/issues"
+									target="_blank"
+									title="Issues"
+									rel="noopener noreferrer"
+								>
+									Issues
+								</a>
+							</li>
+						</ul>
 						<div className="copyright">
-							© 2022. Typing Test Assignment by &nbsp;
-							<a href="https://github.com/mcjovial" title="Emmanuel Elias">
-								McJovial.
-							</a>
+							© 2020. Designed and built with
+							<span role="img" aria-label="Heart">
+								{' '}
+								❤️{' '}
+							</span>
+							by {' '}
+							<a href="https://gkstyle.net/" title="GK STYLE">
+								GK STYLE
+							</a>{' '}
+							team.
 						</div>
 					</div>
 				</footer>
