@@ -29,7 +29,8 @@ const App = () => {
   const [ userInput, setUserInput ] = useState("");
   const [ cwc, setCwc ] = useState(0)
   const [ totalPoints, setTotalPoints ] = useState(targetWords.length)
-  const [ completedWords, setCompletedWords ] = useState([]);
+  const [ completedWords, setCompletedWords] = useState([]);
+  const [ time, setTime] = useState(duration)
 
   useEffect(() => {
     console.log(userInput);
@@ -126,7 +127,7 @@ const App = () => {
 			}
 		}
 
-		const timeRemains = ((60 - duration) / 60).toFixed(2)
+		const timeRemains = ((time - duration) / time).toFixed(2)
 		const _accuracy = Math.floor((index - errorIndex) / index * 100)
 		const _wpm = Math.round(correctIndex / 5 / timeRemains)
 
@@ -155,6 +156,7 @@ const App = () => {
   const ch_tim = (e) => {
     e.preventDefault()
     setDuration(60*e.target.value)
+    setTime(60*e.target.value)
   }
 
   const cha_txt = (e) => {
@@ -199,7 +201,7 @@ const App = () => {
           </div>
           <div className="col-sm-6 col-md-2 order-md-2 px-5">
 						<div className="list-unstyled text-center small">
-							<ItemList name="Timers" data={duration} />
+							<ItemList name="Seconds" data={duration} />
 							<ItemList name="Errors" data={errorIndex} />
               <ItemList name="Acuracy" data={accuracy} symble="%" />
 
