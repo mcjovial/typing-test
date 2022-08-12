@@ -86,31 +86,32 @@ const App = () => {
     const { key } = e
     setUserInput((userInput.toString().replace('Shift', '') || userInput.toString().replace('CapsLock', '')) + key.toString().replace('Shift', ''))
     console.log(key);
-
-    if (key === " " || key === "Enter") {
-      //save user input word along with whether it is correct or not
-      let correct = currentTarget === userInput.trim();
-      if (correct) {
-        setCwc(cwc + 1)
-      }
-      setCompletedWords([
-        ...completedWords,
-        { word: userInput.trim(), correct },
-      ]);
-
-      //update current target word and target words list
-      let newTargetWord = targetWords[1];
-      setTargetWords([...targetWords.slice(1)]);
-      setCurrentTarget(newTargetWord)
-
-      //clear user input
-      setUserInput("");
-
-      //prevent space or key from going into user input
-      // e.preventDefault();
-    }
-
     const challengeText = text
+
+    if (key === challengeText.charAt(index)) {
+      if (key === " " || key === "Enter") {
+        //save user input word along with whether it is correct or not
+        let correct = currentTarget === userInput.trim();
+        if (correct) {
+          setCwc(cwc + 1)
+        }
+        setCompletedWords([
+          ...completedWords,
+          { word: userInput.trim(), correct },
+        ]);
+  
+        //update current target word and target words list
+        let newTargetWord = targetWords[1];
+        setTargetWords([...targetWords.slice(1)]);
+        setCurrentTarget(newTargetWord)
+  
+        //clear user input
+        setUserInput("");
+  
+        //prevent space or key from going into user input
+        // e.preventDefault();
+      }
+    }
 
 		if (key === challengeText.charAt(index)) {
 			setIndex(index + 1)
