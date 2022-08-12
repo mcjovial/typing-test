@@ -4,6 +4,7 @@ import ItemList from './components/ItemList'
 import './App.css'
 
 let interval = null
+const newChallenge = random(challenges)
 
 const App = () => {
 	const inputRef = useRef(null)
@@ -14,22 +15,35 @@ const App = () => {
 	const [ index, setIndex ] = useState(0)
 	const [ correctIndex, setCorrectIndex ] = useState(0)
 	const [ errorIndex, setErrorIndex ] = useState(0)
-	const [ challenge, setChallenge ] = useState({})
+  const [ challenge, setChallenge ] = useState({})
   const [ input, setInput ] = useState('')
   const [ text, setText ] = useState('')
 	const [ cpm, setCpm ] = useState(0)
 	const [ wpm, setWpm ] = useState(0)
 	const [ accuracy, setAccuracy ] = useState(0)
 	const [ isError, setIsError ] = useState(false)
-	const [ lastScore, setLastScore ] = useState('0')
+  const [ lastScore, setLastScore] = useState('0')
+  
+  const [ targetWords, setTargetWords ] = useState(newChallenge.text.split(' '));
+  const [ currentTarget, setCurrentTarget ] = useState(targetWords[0]);
+  const [ userInput, setUserInput ] = useState("");
+  const [cwc, setCwc] = useState(0)
+  const [completedWords, setCompletedWords] = useState([]);
 
-	useEffect(() => {
-		const newChallenge = random(challenges)
+  let correctWords = 0
+
+  useEffect(() => {
+    console.log(userInput);
+    console.log(correctWords)
     setChallenge(newChallenge)
     if (!text) {
       setText(newChallenge.text)
       setInput(newChallenge.text)
     }
+    // words = text.split(' ')
+    console.log(targetWords);
+    console.log(currentTarget);
+    console.log(completedWords)
 	}, [text])
 
 	const handleEnd = () => {
@@ -59,13 +73,43 @@ const App = () => {
     if (!input) {
       setText(challenge.text)
     }
+
+    // if (!targetWords) {
+    //   setTargetWords(challenge.text)
+    // }
 		inputRef.current.focus()
 		setTimer()
 	}
 
 	const handleKeyDown = e => {
 		e.preventDefault()
-		const { key } = e
+    const { key } = e
+    setUserInput((userInput.toString().replace('Shift', '') || userInput.toString().replace('CapsLock', '')) + key.toString().replace('Shift', ''))
+    console.log(key);
+
+    if (key === " " || key === "Enter") {
+      //save user input word along with whether it is correct or not
+      let correct = currentTarget === userInput.trim();
+      if (correct) {
+        setCwc(cwc + 1)
+      }
+      setCompletedWords([
+        ...completedWords,
+        { word: userInput.trim(), correct },
+      ]);
+
+      //update current target word and target words list
+      let newTargetWord = targetWords[1];
+      setTargetWords([...targetWords.slice(1)]);
+      setCurrentTarget(newTargetWord)
+
+      //clear user input
+      setUserInput("");
+
+      //prevent space or key from going into user input
+      // e.preventDefault();
+    }
+
     const challengeText = text
 
 		if (key === challengeText.charAt(index)) {
@@ -99,12 +143,12 @@ const App = () => {
 	}
 
 	useEffect(() => {
-    if (ended) localStorage.setItem('wpm', wpm)
-  }, [ended, wpm])
+    if (ended) localStorage.setItem('cwc', cwc)
+  }, [ended, cwc])
   
 	useEffect(() => {
-		const stroedScore = localStorage.getItem('wpm')
-		if (stroedScore) setLastScore(stroedScore)
+		const storedScore = localStorage.getItem('cwc')
+		if (storedScore) setLastScore(storedScore)
   }, [])
   
   const ch_tim = (e) => {
@@ -114,8 +158,10 @@ const App = () => {
 
   const cha_txt = (e) => {
     e.preventDefault()
-    setInput(e.target.value)
-    setText(e.target.value)
+    let input_value = e.target.value
+    setInput(input_value)
+    setText(input_value)
+    setTargetWords(input_value.split(' '))
   }
 
 	return (
@@ -145,6 +191,7 @@ const App = () => {
 								}
 							/>
 							<ItemList name="CPM" data={cpm} />
+							<ItemList name="Correct Words" data={cwc} />
 							<ItemList name="Last Score" data={lastScore} />
 						</ul>
           </div>
@@ -204,9 +251,7 @@ const App = () => {
 								</div>
 							) : started ? (
 								<div
-									className={`text-light mono quotes${started ? ' active' : ''}${isError
-										? ' is-error'
-										: ''}`}
+									className={`text-light mono quotes${started ? ' active' : ''}${isError ? ' is-error' : ''}`}
 									tabIndex="0"
 									onKeyDown={handleKeyDown}
 									ref={inputRef}
