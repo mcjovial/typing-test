@@ -27,14 +27,12 @@ const App = () => {
   const [ targetWords, setTargetWords ] = useState(newChallenge.text.split(' '));
   const [ currentTarget, setCurrentTarget ] = useState(targetWords[0]);
   const [ userInput, setUserInput ] = useState("");
-  const [cwc, setCwc] = useState(0)
-  const [completedWords, setCompletedWords] = useState([]);
-
-  let correctWords = 0
+  const [ cwc, setCwc ] = useState(0)
+  const [ totalPoints, setTotalPoints ] = useState(targetWords.length)
+  const [ completedWords, setCompletedWords ] = useState([]);
 
   useEffect(() => {
     console.log(userInput);
-    console.log(correctWords)
     setChallenge(newChallenge)
     if (!text) {
       setText(newChallenge.text)
@@ -77,6 +75,7 @@ const App = () => {
     // if (!targetWords) {
     //   setTargetWords(challenge.text)
     // }
+    setTotalPoints(targetWords.length)
 		inputRef.current.focus()
 		setTimer()
 	}
@@ -143,7 +142,9 @@ const App = () => {
 	}
 
 	useEffect(() => {
-    if (ended) localStorage.setItem('cwc', cwc)
+    if (ended) {
+      localStorage.setItem('cwc', `${cwc}/${totalPoints}`)
+    }
   }, [ended, cwc])
   
 	useEffect(() => {
@@ -191,8 +192,9 @@ const App = () => {
 								}
 							/>
 							<ItemList name="CPM" data={cpm} />
-							<ItemList name="Correct Words" data={cwc} />
-							<ItemList name="Last Score" data={lastScore} />
+							<ItemList name="Points" data={cwc} />
+							<ItemList name="Total Points" data={totalPoints} />
+							<ItemList name="Last Score" data={lastScore} size="medium" />
 						</ul>
           </div>
           <div className="col-sm-6 col-md-2 order-md-2 px-5">
