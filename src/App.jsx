@@ -211,11 +211,13 @@ const App = () => {
 
               <div>
                 <label>
-                  Choose Duration in Minutes:
+                  Choose Duration:
                   <Input
                     size='4'
                     list='time'
+                    type='number'
                     name='challenge_time'
+                    placeholder='Minutes'
                     onChange={handleTime}
                   />
                 </label>
