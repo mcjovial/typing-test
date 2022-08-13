@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { challenges, random, allowedKeys } from './utils/Helper';
 import ItemList from './components/ItemList';
 import './App.css';
+import Button from './components/Button';
 
 let interval = null;
 const newChallenge = random(challenges);
@@ -225,26 +226,22 @@ const App = () => {
 
               <div className='control my-5'>
                 {ended ? (
-                  <button
-                    className='btn btn-outline-danger btn-circle'
+                  <Button
+                    style='btn btn-outline-danger btn-circle'
                     onClick={() => window.location.reload()}
-                  >
-                    Reload
-                  </button>
+                    name='Reload'
+                  />
                 ) : started ? (
-                  <button
-                    className='btn btn-circle btn-outline-success'
-                    disabled
-                  >
-                    Hurry
-                  </button>
-                ) : (
-                  <button
-                    className='btn btn-circle btn-outline-success'
+                  <Button
+                    style='btn btn-circle btn-outline-success'
+                    name='Hurry!'
+                  />
+                  ) : (
+                  <Button
+                    style='btn btn-circle btn-outline-success'
                     onClick={handleStart}
-                  >
-                    GO!
-                  </button>
+                    name='Go!'
+                  />
                 )}
                 <span className='btn-circle-animation' />
               </div>
