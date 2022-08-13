@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { challenges, random, allowedKeys } from './utils/Helper';
-import ItemList from './components/ItemList';
+import ItemList from './components/ItemList/ItemList';
 import './App.css';
-import Button from './components/Button';
+import Button from './components/Button/Button';
 import Input from './components/Input/Input';
-import TextArea from './components/TextArea';
+import TextArea from './components/TextArea/TextArea';
 
 let interval = null;
 const newChallenge = random(challenges);
@@ -13,27 +13,26 @@ const App = () => {
   const inputRef = useRef(null);
   const outputRef = useRef(null);
   const [duration, setDuration] = useState(0);
-  const [started, setStarted] = useState(false);
   const [ended, setEnded] = useState(false);
-  const [index, setIndex] = useState(0);
   const [correctIndex, setCorrectIndex] = useState(0);
   const [errorIndex, setErrorIndex] = useState(0);
   const [challenge, setChallenge] = useState({});
+  const [isError, setIsError] = useState(false);
   const [input, setInput] = useState('');
   const [text, setText] = useState('');
   const [cpm, setCpm] = useState(0);
   const [wpm, setWpm] = useState(0);
+  const [cwc, setCwc] = useState(0);
+  const [time, setTime] = useState(duration);
+  const [index, setIndex] = useState(0);
+  const [started, setStarted] = useState(false);
   const [accuracy, setAccuracy] = useState(0);
-  const [isError, setIsError] = useState(false);
   const [lastScore, setLastScore] = useState('0');
-
   const [targetWords, setTargetWords] = useState(newChallenge.text.split(' '));
   const [currentTarget, setCurrentTarget] = useState(targetWords[0]);
-  const [userInput, setUserInput] = useState('');
-  const [cwc, setCwc] = useState(0);
-  const [totalPoints, setTotalPoints] = useState(targetWords.length);
   const [completedWords, setCompletedWords] = useState([]);
-  const [time, setTime] = useState(duration);
+  const [userInput, setUserInput] = useState('');
+  const [totalPoints, setTotalPoints] = useState(targetWords.length);
 
   useEffect(() => {
     setChallenge(newChallenge);
@@ -236,10 +235,11 @@ const App = () => {
                     name='Reload'
                   />
                 ) : started ? (
-                  <Button
-                    type='success'
-                    name='Hurry!'
-                  />
+                    <Button
+                      disabled='true'
+                      type='success'
+                      name='Hurry!'
+                    />
                   ) : (
                   <Button
                     type='success'
