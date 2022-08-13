@@ -4,6 +4,7 @@ import ItemList from './components/ItemList';
 import './App.css';
 import Button from './components/Button';
 import Input from './components/Input';
+import TextArea from './components/TextArea';
 
 let interval = null;
 const newChallenge = random(challenges);
@@ -263,14 +264,14 @@ const App = () => {
                     {text}
                   </div>
                 ) : (
-                  <textarea
-                    className='col-md-12 rounded lead'
+                  <TextArea
+                    style='col-md-12 rounded lead'
                     name='story'
                     rows='5'
                     cols='60'
                     onChange={handleChallenge}
                     defaultValue='Paste your challenge text here...'
-                  ></textarea>
+                  />
                 )}
               </div>
 
