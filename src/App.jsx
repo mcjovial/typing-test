@@ -3,6 +3,7 @@ import { challenges, random, allowedKeys } from './utils/Helper';
 import ItemList from './components/ItemList';
 import './App.css';
 import Button from './components/Button';
+import Input from './components/Input';
 
 let interval = null;
 const newChallenge = random(challenges);
@@ -210,8 +211,8 @@ const App = () => {
               <div>
                 <label>
                   Choose Duration in Minutes:
-                  <input
-                    className='col-md-4'
+                  <Input
+                    style='col-md-4'
                     list='time'
                     name='challenge_time'
                     onChange={handleTime}
