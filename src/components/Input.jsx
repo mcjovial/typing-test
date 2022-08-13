@@ -1,13 +1,13 @@
 import React from 'react'
 
-const Input = ({ style, type, name, list, id, onChange}) => {
+const Input = ({ size, type, name, list, id, onChange}) => {
   return (
     <input
       id={id}
       type={type}
       list={list}
       name={name}
-      className={style}
+      className={`col-md-${size}`}
       onChange={onChange}
     />
   )

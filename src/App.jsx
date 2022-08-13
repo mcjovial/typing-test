@@ -213,7 +213,7 @@ const App = () => {
                 <label>
                   Choose Duration in Minutes:
                   <Input
-                    style='col-md-4'
+                    size='4'
                     list='time'
                     name='challenge_time'
                     onChange={handleTime}
@@ -229,18 +229,18 @@ const App = () => {
               <div className='control my-5'>
                 {ended ? (
                   <Button
-                    style='btn btn-outline-danger btn-circle'
+                    type='danger'
                     onClick={() => window.location.reload()}
                     name='Reload'
                   />
                 ) : started ? (
                   <Button
-                    style='btn btn-circle btn-outline-success'
+                    type='success'
                     name='Hurry!'
                   />
                   ) : (
                   <Button
-                    style='btn btn-circle btn-outline-success'
+                    type='success'
                     onClick={handleStart}
                     name='Go!'
                   />
@@ -265,7 +265,7 @@ const App = () => {
                   </div>
                 ) : (
                   <TextArea
-                    style='col-md-12 rounded lead'
+                    size='12'
                     name='story'
                     rows='5'
                     cols='60'

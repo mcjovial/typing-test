@@ -1,9 +1,9 @@
 import React from 'react'
 
-const TextArea = ({ style, name, rows, cols, onChange, defaultValue }) => {
+const TextArea = ({ size, name, rows, cols, onChange, defaultValue }) => {
   return (
     <textarea
-    className={style}
+    className={`col-md-${size} rounded lead`}
     name={name}
     rows={rows}
     cols={cols}
