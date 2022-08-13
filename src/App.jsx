@@ -3,7 +3,7 @@ import { challenges, random, allowedKeys } from './utils/Helper';
 import ItemList from './components/ItemList';
 import './App.css';
 import Button from './components/Button';
-import Input from './components/Input';
+import Input from './components/Input/Input';
 import TextArea from './components/TextArea';
 
 let interval = null;
