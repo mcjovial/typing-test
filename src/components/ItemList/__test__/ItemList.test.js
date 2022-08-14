@@ -35,6 +35,6 @@ describe("AddInput", () => {
     ); 
     const element = screen.getByText(/50/i);
     expect(element).toHaveTextContent('50');
-      expect(element).toBeVisible();
+    expect(element).toBeVisible();
   });
 })

@@ -9,7 +9,7 @@ const TextArea = ({ size, name, rows, cols, onChange, defaultValue }) => {
     cols={cols}
     onChange={onChange}
     defaultValue={defaultValue}
-  ></textarea>
+  />
 
   )
 }
